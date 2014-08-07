@@ -1,18 +1,25 @@
+/*
+Package gowikia provides a way to accessing Wikia.com's API from go
+
+Example usage:
+
+  package main
+
+  import "github.com/aquilax/go-wikia"
+
+  func main() {
+      wikiaApi = NewWikiaApi("http://muppet.wikia.com")
+      latestActivity, err := wikiaApi.LatestActivity()
+	  ...
+  }
+*/
 package gowikia
-
-const (
-	API_URL = "https://api.tictail.com"
-	API_VER = "v1"
-
-	API_GET = "GET"
-
-	API_STORES = "stores"
-)
 
 type WikiaApi struct {
 	url string
 }
 
+// NewWikiaApi function creates new wikiaApi or throws an error on invalid url 
 func NewWikiaApi(wikiaUrl string) (*WikiaApi, error) {
 	valid, err := isValidUrl(wikiaUrl)
 	if !valid {
