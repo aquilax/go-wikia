@@ -53,3 +53,18 @@ func TestParseList(t *testing.T) {
 		}
 	}
 }
+
+func TestParseMostLinked(t *testing.T) {
+	testCases := []TestCase{
+		{[]byte(`{"items":[{"id":1,"title":"string","url":"string","ns":2,"backlink_cnt":3}],"basepath":"string"}`)},
+	}
+	for i, testCase := range testCases {
+		var mlr MostLinkedResult
+		_ = json.Unmarshal(testCase.blob, &mlr)
+		result, _ := json.Marshal(mlr)
+		if string(testCase.blob) != string(result) {
+			t.Errorf("For testCase %d expected MostLinkedResult=%s but got MostLinkedResult=%s",
+				i, testCase.blob, result)
+		}
+	}
+}

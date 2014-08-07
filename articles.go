@@ -129,6 +129,8 @@ type ListRequest struct {
 	offset     string
 }
 
+// Get a list of pages on the current wiki
+// http://muppet.wikia.com/api/v1#!/Articles/getList_get_3
 func (wa *WikiaApi) ArticlesList(lr ListRequest) (ListResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
@@ -144,4 +146,31 @@ func (wa *WikiaApi) ArticlesList(lr ListRequest) (ListResult, error) {
 	}
 	var lres ListResult
 	return lres, json.Unmarshal(jsonBlob, &lres)
+}
+
+type MostLinkedResultItem struct {
+	Id          int    `json:"id"`
+	Title       string `json:"title"`
+	Url         string `json:"url"`
+	Ns          int    `json:"ns"`
+	BackLinkCnt int    `json:"backlink_cnt"`
+}
+
+type MostLinkedResult struct {
+	Items    []MostLinkedResultItem `json:"items"`
+	Basepath string                 `json:"basepath"`
+}
+
+// Get the most linked articles on this wiki
+// http://muppet.wikia.com/api/v1#!/Articles/getTop_get_4
+func (wa *WikiaApi) ArticlesMostLinked() (MostLinkedResult, error) {
+	jsonBlob, err := getJsonBlob(
+		wa.url,
+		[]string{ARTICLES_SEGMENT, "MostLinked"},
+		RequestParams{})
+	if err != nil {
+		return MostLinkedResult{}, err
+	}
+	var mlres MostLinkedResult
+	return mlres, json.Unmarshal(jsonBlob, &mlres)
 }
