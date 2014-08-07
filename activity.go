@@ -27,15 +27,6 @@ type ActivityResult struct {
 	Basepath string               `json:"basepath"`
 }
 
-func parseActivity(jsonBlob []byte) (ActivityResult, error) {
-	var result ActivityResult
-	err := json.Unmarshal(jsonBlob, &result)
-	if err != nil {
-		return result, err
-	}
-	return result, nil
-}
-
 // Provides default values for LatestActivity function
 func ActivityDefaults() ActivityRequest {
 	return ActivityRequest{10, []int{0}, true}
@@ -55,7 +46,8 @@ func (wa *WikiaApi) LatestActivity(ar ActivityRequest) (ActivityResult, error) {
 	if err != nil {
 		return ActivityResult{}, err
 	}
-	return parseActivity(jsonBlob)
+	var ares ActivityResult
+	return ares, json.Unmarshal(jsonBlob, &ares)
 }
 
 // Get recently changed articles
@@ -72,5 +64,6 @@ func (wa *WikiaApi) RecentlyChangedArticles(ar ActivityRequest) (ActivityResult,
 	if err != nil {
 		return ActivityResult{}, err
 	}
-	return parseActivity(jsonBlob)
+	var ares ActivityResult
+	return ares, json.Unmarshal(jsonBlob, &ares)
 }

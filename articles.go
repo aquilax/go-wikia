@@ -36,15 +36,6 @@ type AsSimpleJsonResult struct {
 	Sections AsSimpleJsonSections `json:"sections"`
 }
 
-func parseAsSimpleJson(jsonBlob []byte) (AsSimpleJsonResult, error) {
-	var result AsSimpleJsonResult
-	err := json.Unmarshal(jsonBlob, &result)
-	if err != nil {
-		return result, err
-	}
-	return result, nil
-}
-
 // Get simplified article contents
 // http://muppet.wikia.com/api/v1#!/Articles/getAsSimpleJson_get_0
 func (wa *WikiaApi) AsSimpleJson(id int) (AsSimpleJsonResult, error) {
@@ -57,5 +48,6 @@ func (wa *WikiaApi) AsSimpleJson(id int) (AsSimpleJsonResult, error) {
 	if err != nil {
 		return AsSimpleJsonResult{}, err
 	}
-	return parseAsSimpleJson(jsonBlob)
+	var ares AsSimpleJsonResult
+	return ares, json.Unmarshal(jsonBlob, &ares)
 }
