@@ -5,10 +5,6 @@ import (
 	"strconv"
 )
 
-const (
-	ACTIVITY_SEGMENT = "Activity"
-)
-
 type ActivityRequest struct {
 	limit           int
 	namespaces      []int

@@ -38,3 +38,18 @@ func TestParseDetails(t *testing.T) {
 		}
 	}
 }
+
+func TestParseList(t *testing.T) {
+	testCases := []TestCase{
+		{[]byte(`{"items":[{"id":1,"title":"string","url":"string","ns":1}],"offset":"string","basepath":"string"}`)},
+	}
+	for i, testCase := range testCases {
+		var lr ListResult
+		_ = json.Unmarshal(testCase.blob, &lr)
+		result, _ := json.Marshal(lr)
+		if string(testCase.blob) != string(result) {
+			t.Errorf("For testCase %d expected ListResult=%s but got ListResult=%s",
+				i, testCase.blob, result)
+		}
+	}
+}

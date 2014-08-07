@@ -4,10 +4,6 @@ import (
 	"encoding/json"
 )
 
-const (
-	ARTICLES_SEGMENT = "Articles"
-)
-
 type AsSimpleJsonElementsItem struct {
 	Text     string                     `json:"text"`
 	Elements []AsSimpleJsonElementsItem `json:"elements"`
@@ -93,6 +89,8 @@ func DetailsDefaults() DetailsRequest {
 	return DetailsRequest{[]int{50}, []string{}, 100, 200, 200}
 }
 
+// Get details about one or more articles
+// http://muppet.wikia.com/api/v1#!/Articles/getDetails_get_1
 func (wa *WikiaApi) Details(dr DetailsRequest) (DetailsResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
@@ -109,4 +107,41 @@ func (wa *WikiaApi) Details(dr DetailsRequest) (DetailsResult, error) {
 	}
 	var dres DetailsResult
 	return dres, json.Unmarshal(jsonBlob, &dres)
+}
+
+type ListResultItem struct {
+	Id    int    `json:"id"`
+	Title string `json:"title"`
+	Url   string `json:"url"`
+	Ns    int    `json:"ns"`
+}
+
+type ListResult struct {
+	Items    []ListResultItem `json:"items"`
+	Offset   string           `json:"offset"`
+	Basepath string           `json:"basepath"`
+}
+
+type ListRequest struct {
+	category   string
+	namespaces []int
+	limit      int
+	offset     string
+}
+
+func (wa *WikiaApi) ArticlesList(lr ListRequest) (ListResult, error) {
+	jsonBlob, err := getJsonBlob(
+		wa.url,
+		[]string{ARTICLES_SEGMENT, "List"},
+		RequestParams{
+			"category":   lr.category,
+			"namespaces": intArrToStr(lr.namespaces),
+			"limit":      intToStr(lr.limit),
+			"offset":     lr.offset,
+		})
+	if err != nil {
+		return ListResult{}, err
+	}
+	var lres ListResult
+	return lres, json.Unmarshal(jsonBlob, &lres)
 }
