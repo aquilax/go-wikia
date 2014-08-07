@@ -194,14 +194,43 @@ type ArticlesNewRequest struct {
 	minArticleQuality int
 }
 
+// Get list of new articles on this wiki
+// http://muppet.wikia.com/api/v1#!/Articles/getNew_get_6
 func (wa *WikiaApi) ArticlesNew(nr ArticlesNewRequest) (ArticlesNewResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
-		[]string{ARTICLES_SEGMENT, "MostLinked"},
+		[]string{ARTICLES_SEGMENT, "New"},
 		RequestParams{})
 	if err != nil {
 		return ArticlesNewResult{}, err
 	}
 	var nres ArticlesNewResult
 	return nres, json.Unmarshal(jsonBlob, &nres)
+}
+
+type ArticlesPopularItem struct {
+	Id    int    `json:"id"`
+	Title string `json:"title"`
+	Url   string `json:"url"`
+}
+
+type ArticlesPopularResult struct {
+	Items    []ArticlesPopularItem `json:"items"`
+	Basepath string                `json:"basepath"`
+}
+
+// Get popular articles for the current wiki (from the beginning of time)
+// http://muppet.wikia.com/api/v1#!/Articles/getPopular_get_7
+func (wa *WikiaApi) ArticlesPopular(limit int) (ArticlesPopularResult, error) {
+	jsonBlob, err := getJsonBlob(
+		wa.url,
+		[]string{ARTICLES_SEGMENT, "Popular"},
+		RequestParams{
+			"limit": intToStr(limit),
+		})
+	if err != nil {
+		return ArticlesPopularResult{}, err
+	}
+	var pres ArticlesPopularResult
+	return pres, json.Unmarshal(jsonBlob, &pres)
 }

@@ -83,3 +83,18 @@ func TestParseNew(t *testing.T) {
 		}
 	}
 }
+
+func TestPopularNew(t *testing.T) {
+	testCases := []TestCase{
+		{[]byte(`{"items":[{"id":1,"title":"string","url":"string"}],"basepath":"string"}`)},
+	}
+	for i, testCase := range testCases {
+		var pr ArticlesPopularResult
+		_ = json.Unmarshal(testCase.blob, &pr)
+		result, _ := json.Marshal(pr)
+		if string(testCase.blob) != string(result) {
+			t.Errorf("For testCase %d expected ArticlesPopularResult=%s but got ArticlesPopularResult=%s",
+				i, testCase.blob, result)
+		}
+	}
+}
