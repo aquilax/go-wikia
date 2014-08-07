@@ -9,7 +9,7 @@ Example usage:
 
   func main() {
       wikiaApi = NewWikiaApi("http://muppet.wikia.com")
-      latestActivity, err := wikiaApi.LatestActivity()
+      latestActivity, err := wikiaApi.LatestActivity(ActivityDefaults())
 	  ...
   }
 */
@@ -19,7 +19,7 @@ type WikiaApi struct {
 	url string
 }
 
-// NewWikiaApi function creates new wikiaApi or throws an error on invalid url 
+// NewWikiaApi function creates new wikiaApi or throws an error on invalid url
 func NewWikiaApi(wikiaUrl string) (*WikiaApi, error) {
 	valid, err := isValidUrl(wikiaUrl)
 	if !valid {

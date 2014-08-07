@@ -3,6 +3,7 @@ package gowikia
 import (
 	"errors"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -10,7 +11,8 @@ const (
 	API_SEGMENT = "api"
 	API_VERSION = "v1"
 
-	PATH_SEPARATOR = "/"
+	SEPARATOR_PATH = "/"
+	SEPARATOR_INT  = ","
 )
 
 func isValidUrl(u string) (bool, error) {
@@ -36,5 +38,21 @@ func generateApiUrl(wikiaUrl, path, query string) (apiURL string) {
 
 func generatePath(segments []string) string {
 	segments = append([]string{API_SEGMENT, API_VERSION}, segments...)
-	return strings.Join(segments, PATH_SEPARATOR)
+	return strings.Join(segments, SEPARATOR_PATH)
+}
+
+func generateQuery(hash map[string]string) string {
+	values := url.Values{}
+	for key, val := range hash {
+		values.Set(key, val)
+	}
+	return values.Encode()
+}
+
+func intArrToStr(numbers []int) string {
+	var strArray []string
+	for _, number := range numbers {
+		strArray = append(strArray, strconv.Itoa(number))
+	}
+	return strings.Join(strArray, SEPARATOR_INT)
 }

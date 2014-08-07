@@ -21,6 +21,11 @@ type generatePathTestCase struct {
 	expected string
 }
 
+type intArrToStrTestCase struct {
+	numbers  []int
+	expected string
+}
+
 func TestIsValidUrl(t *testing.T) {
 	var testCases = []isValidUrlTestCase{
 		{"http://1.2.3.4/", true},
@@ -61,6 +66,20 @@ func TestGeneratePath(t *testing.T) {
 		path := generatePath(testCase.segments)
 		if path != testCase.expected {
 			t.Errorf("For testCase %d expected path=%s but got path=%s", i, testCase.expected, path)
+		}
+	}
+}
+
+func TestIntArrToStr(t *testing.T) {
+	var testCases = []intArrToStrTestCase{
+		{[]int{1, 2, 3}, "1,2,3"},
+		{[]int{}, ""},
+		{[]int{10000, 30000, 3000}, "10000,30000,3000"},
+	}
+	for i, testCase := range testCases {
+		result := intArrToStr(testCase.numbers)
+		if result != testCase.expected {
+			t.Errorf("For testCase %d expected numbers=%s but got numbers=%s", i, testCase.expected, result)
 		}
 	}
 }
