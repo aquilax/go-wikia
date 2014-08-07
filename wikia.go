@@ -13,6 +13,6 @@ type WikiaApi struct {
 	url string
 }
 
-func NewWikiaApi(wikiaUrl string) {
-
+func NewWikiaApi(wikiaUrl string) (wa *WikiaApi) {
+	return &WikiaApi{wikiaUrl}
 }
