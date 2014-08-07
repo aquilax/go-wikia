@@ -113,3 +113,18 @@ func TestPopularTop(t *testing.T) {
 		}
 	}
 }
+
+func TestTopByHub(t *testing.T) {
+	testCases := []TestCase{
+		{[]byte(`{"items":[{"wiki":{"id":1,"name":"string","language":"string","domain":"string"},"articles":[{"id":2,"ns":3}]}]}`)},
+	}
+	for i, testCase := range testCases {
+		var tbhr ArticlesTopByHubResult
+		_ = json.Unmarshal(testCase.blob, &tbhr)
+		result, _ := json.Marshal(tbhr)
+		if string(testCase.blob) != string(result) {
+			t.Errorf("For testCase %d expected ArticlesTopByHubResult=%s but got ArticlesTopByHubResult=%s",
+				i, testCase.blob, result)
+		}
+	}
+}

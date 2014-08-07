@@ -255,16 +255,63 @@ type ArticlesTopRequest struct {
 
 // Get the most viewed articles on this wiki
 // http://muppet.wikia.com/api/v1#!/Articles/getTop_get_9
-func (wa *WikiaApi) ArticlesTop(limit int) (ArticlesTopResult, error) {
+func (wa *WikiaApi) ArticlesTop(tr ArticlesTopRequest) (ArticlesTopResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
 		[]string{ARTICLES_SEGMENT, "Top"},
 		RequestParams{
-			"namespaces": intToStr(limit),
+			"namespaces": intArrToStr(tr.namespaces),
+			"category":   tr.category,
+			"limit":      intToStr(tr.limit),
 		})
 	if err != nil {
 		return ArticlesTopResult{}, err
 	}
 	var tres ArticlesTopResult
 	return tres, json.Unmarshal(jsonBlob, &tres)
+}
+
+type ArticlesTopByHubWiki struct {
+	Id       int    `json:"id"`
+	Name     string `json:"name"`
+	Language string `json:"language"`
+	Domain   string `json:"domain"`
+}
+
+type ArticlesTopByHubArticle struct {
+	Id int `json:"id"`
+	Ns int `json:"ns"`
+}
+
+type ArticlesTopByHubItem struct {
+	Wiki     ArticlesTopByHubWiki      `json:"wiki"`
+	Articles []ArticlesTopByHubArticle `json:"articles"`
+}
+
+type ArticlesTopByHubResult struct {
+	Items []ArticlesTopByHubItem `json:"items"`
+}
+
+type TopByHubRequest struct {
+	hub        string
+	lang       string
+	namespaces []int
+}
+
+// Get the top articles by pageviews for a hub
+// http://muppet.wikia.com/api/v1#!/Articles/getTopByHub_get_11
+func (wa *WikiaApi) ArticlesTopByHub(tbhr TopByHubRequest) (ArticlesTopByHubResult, error) {
+	jsonBlob, err := getJsonBlob(
+		wa.url,
+		[]string{ARTICLES_SEGMENT, "Top"},
+		RequestParams{
+			"hub":        tbhr.hub,
+			"lang":       tbhr.lang,
+			"namespaces": intArrToStr(tbhr.namespaces),
+		})
+	if err != nil {
+		return ArticlesTopByHubResult{}, err
+	}
+	var tbhres ArticlesTopByHubResult
+	return tbhres, json.Unmarshal(jsonBlob, &tbhres)
 }
