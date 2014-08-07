@@ -54,22 +54,17 @@ type DetailsResultItemRevision struct {
 	Timestamp int    `json:"timestamp"`
 }
 
-type DetailsResultItemOriginalDimensions struct {
-	Width  int `json:"width"`
-	Height int `json:"height"`
-}
-
 type DetailsResultItem struct {
-	Id                 int                                 `json:"id"`
-	Title              string                              `json:"title"`
-	Ns                 int                                 `json:"ns"`
-	Url                string                              `json:"url"`
-	Revision           DetailsResultItemRevision           `json:"revision"`
-	Comments           int                                 `json:"comments"`
-	Type               string                              `json:"type"`
-	Abstract           string                              `json:"abstract"`
-	Thumbnail          string                              `json:"thumbnail"`
-	OriginalDimensions DetailsResultItemOriginalDimensions `json:"original_dimensions"`
+	Id                 int                       `json:"id"`
+	Title              string                    `json:"title"`
+	Ns                 int                       `json:"ns"`
+	Url                string                    `json:"url"`
+	Revision           DetailsResultItemRevision `json:"revision"`
+	Comments           int                       `json:"comments"`
+	Type               string                    `json:"type"`
+	Abstract           string                    `json:"abstract"`
+	Thumbnail          string                    `json:"thumbnail"`
+	OriginalDimensions OriginalDimensions        `json:"original_dimensions"`
 }
 
 type DetailsResult struct {
@@ -173,4 +168,40 @@ func (wa *WikiaApi) ArticlesMostLinked() (MostLinkedResult, error) {
 	}
 	var mlres MostLinkedResult
 	return mlres, json.Unmarshal(jsonBlob, &mlres)
+}
+
+type Creator struct {
+	Avatar string `json:"avatar"`
+	Name   string `json:"name"`
+}
+
+type ArticlesNewResult struct {
+	Id                 int                `json:"id"`
+	Ns                 int                `json:"ns"`
+	Title              string             `json:"title"`
+	Abstract           string             `json:"abstract"`
+	Quality            int                `json:"quality"`
+	Url                string             `json:"url"`
+	Creator            Creator            `json:"creator"`
+	CreationDate       string             `json:"creation_date"`
+	Thumbnail          string             `json:"thumbnail"`
+	OriginalDimensions OriginalDimensions `json:"original_dimensions"`
+}
+
+type ArticlesNewRequest struct {
+	namespaces        []int
+	limit             int
+	minArticleQuality int
+}
+
+func (wa *WikiaApi) ArticlesNew(nr ArticlesNewRequest) (ArticlesNewResult, error) {
+	jsonBlob, err := getJsonBlob(
+		wa.url,
+		[]string{ARTICLES_SEGMENT, "MostLinked"},
+		RequestParams{})
+	if err != nil {
+		return ArticlesNewResult{}, err
+	}
+	var nres ArticlesNewResult
+	return nres, json.Unmarshal(jsonBlob, &nres)
 }

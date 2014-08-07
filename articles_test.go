@@ -68,3 +68,18 @@ func TestParseMostLinked(t *testing.T) {
 		}
 	}
 }
+
+func TestParseNew(t *testing.T) {
+	testCases := []TestCase{
+		{[]byte(`{"id":1,"ns":2,"title":"string","abstract":"string","quality":3,"url":"string","creator":{"avatar":"string","name":"string"},"creation_date":"string","thumbnail":"string","original_dimensions":{"width":5,"height":6}}`)},
+	}
+	for i, testCase := range testCases {
+		var nr ArticlesNewResult
+		_ = json.Unmarshal(testCase.blob, &nr)
+		result, _ := json.Marshal(nr)
+		if string(testCase.blob) != string(result) {
+			t.Errorf("For testCase %d expected ArticlesNewResult=%s but got ArticlesNewResult=%s",
+				i, testCase.blob, result)
+		}
+	}
+}

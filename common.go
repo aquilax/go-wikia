@@ -11,6 +11,11 @@ const (
 
 type RequestParams map[string]string
 
+type OriginalDimensions struct {
+	Width  int `json:"width"`
+	Height int `json:"height"`
+}
+
 func getJsonBlob(wikiaUrl string, segments []string, params RequestParams) ([]byte, error) {
 	path := generatePath(segments)
 	query := generateQuery(params)
