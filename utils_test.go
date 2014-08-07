@@ -12,6 +12,11 @@ type generateApiTestCase struct {
 	err      error
 }
 
+type generatePathTestCase struct {
+	segments []string
+	expected string
+}
+
 func TestGenerateApiUrl(t *testing.T) {
 	var testCases = []generateApiTestCase{
 		{"http://localhost", "", "", "http://localhost", nil},
@@ -26,6 +31,21 @@ func TestGenerateApiUrl(t *testing.T) {
 		}
 		if err != testCase.err {
 			t.Errorf("For testCase %d expected err=%s but got err=%s", i, testCase.err, err)
+		}
+	}
+}
+
+func TestGeneratePath(t *testing.T) {
+	var testCases = []generatePathTestCase{
+		{[]string{"Test"}, "api/v1/Test"},
+		{[]string{"Test", "Me"}, "api/v1/Test/Me"},
+		{[]string{"Test", "Me", "Hard"}, "api/v1/Test/Me/Hard"},
+	}
+
+	for i, testCase := range testCases {
+		path := generatePath(testCase.segments)
+		if path != testCase.expected {
+			t.Errorf("For testCase %d expected path=%s but got path=%s", i, testCase.expected, path)
 		}
 	}
 }
