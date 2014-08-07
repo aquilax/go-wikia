@@ -21,6 +21,11 @@ type generatePathTestCase struct {
 	expected string
 }
 
+type strArrToStrTestCase struct {
+	words    []string
+	expected string
+}
+
 type intArrToStrTestCase struct {
 	numbers  []int
 	expected string
@@ -66,6 +71,19 @@ func TestGeneratePath(t *testing.T) {
 		path := generatePath(testCase.segments)
 		if path != testCase.expected {
 			t.Errorf("For testCase %d expected path=%s but got path=%s", i, testCase.expected, path)
+		}
+	}
+}
+
+func TestStrArrToStr(t *testing.T) {
+	var testCases = []strArrToStrTestCase{
+		{[]string{"one", "two", "three"}, "one,two,three"},
+		{[]string{}, ""},
+	}
+	for i, testCase := range testCases {
+		result := strArrToStr(testCase.words)
+		if result != testCase.expected {
+			t.Errorf("For testCase %d expected numbers=%s but got numbers=%s", i, testCase.expected, result)
 		}
 	}
 }

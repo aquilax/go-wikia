@@ -11,8 +11,8 @@ const (
 	API_SEGMENT = "api"
 	API_VERSION = "v1"
 
-	SEPARATOR_PATH = "/"
-	SEPARATOR_INT  = ","
+	SEPARATOR_PATH  = "/"
+	SEPARATOR_ARRAY = ","
 )
 
 func isValidUrl(u string) (bool, error) {
@@ -49,12 +49,16 @@ func generateQuery(hash map[string]string) string {
 	return values.Encode()
 }
 
+func strArrToStr(strArray []string) string {
+	return strings.Join(strArray, SEPARATOR_ARRAY)
+}
+
 func intArrToStr(numbers []int) string {
 	var strArray []string
 	for _, number := range numbers {
 		strArray = append(strArray, strconv.Itoa(number))
 	}
-	return strings.Join(strArray, SEPARATOR_INT)
+	return strArrToStr(strArray)
 }
 
 func intToStr(number int) string {
