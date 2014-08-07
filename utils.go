@@ -1,6 +1,7 @@
 package gowikia
 
 import (
+	"errors"
 	"net/url"
 	"strings"
 )
@@ -12,14 +13,25 @@ const (
 	PATH_SEPARATOR = "/"
 )
 
-func generateApiUrl(wikiaUrl, path, query string) (apiURL string, err error) {
+func isValidUrl(u string) (bool, error) {
+	ur, err := url.Parse(u)
+	if err != nil {
+		return false, err
+	}
+	if ur.Scheme == "http" || ur.Scheme == "https" {
+		return true, nil
+	}
+	return false, errors.New("Invalid protocol provided, only http and https are allowed")
+}
+
+func generateApiUrl(wikiaUrl, path, query string) (apiURL string) {
 	parsedUrl, err := url.Parse(wikiaUrl)
 	if err != nil {
-		return "", err
+		panic(err)
 	}
 	parsedUrl.Path = path
 	parsedUrl.RawQuery = query
-	return parsedUrl.String(), nil
+	return parsedUrl.String()
 }
 
 func generatePath(segments []string) string {

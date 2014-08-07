@@ -13,6 +13,10 @@ type WikiaApi struct {
 	url string
 }
 
-func NewWikiaApi(wikiaUrl string) (wa *WikiaApi) {
-	return &WikiaApi{wikiaUrl}
+func NewWikiaApi(wikiaUrl string) (*WikiaApi, error) {
+	valid, err := isValidUrl(wikiaUrl)
+	if !valid {
+		return nil, err
+	}
+	return &WikiaApi{wikiaUrl}, nil
 }

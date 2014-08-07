@@ -4,12 +4,16 @@ import (
 	"testing"
 )
 
+type isValidUrlTestCase struct {
+	url      string
+	expected bool
+}
+
 type generateApiTestCase struct {
 	url      string
 	path     string
 	query    string
 	expected string
-	err      error
 }
 
 type generatePathTestCase struct {
@@ -17,20 +21,31 @@ type generatePathTestCase struct {
 	expected string
 }
 
+func TestIsValidUrl(t *testing.T) {
+	var testCases = []isValidUrlTestCase{
+		{"http://1.2.3.4/", true},
+		{"http://example.com/", true},
+		{"ftp://example.com/", false},
+	}
+	for i, testCase := range testCases {
+		valid, _ := isValidUrl(testCase.url)
+		if valid != testCase.expected {
+			t.Errorf("For testCase %d expected valid=%b but got valid=%b", i, testCase.expected, valid)
+		}
+	}
+}
+
 func TestGenerateApiUrl(t *testing.T) {
 	var testCases = []generateApiTestCase{
-		{"http://localhost", "", "", "http://localhost", nil},
+		{"http://localhost", "", "", "http://localhost"},
 		{"http://muppet.wikia.com/", "api/v1/Activity", "test=1",
-			"http://muppet.wikia.com/api/v1/Activity?test=1", nil},
+			"http://muppet.wikia.com/api/v1/Activity?test=1"},
 	}
 
 	for i, testCase := range testCases {
-		u, err := generateApiUrl(testCase.url, testCase.path, testCase.query)
+		u := generateApiUrl(testCase.url, testCase.path, testCase.query)
 		if u != testCase.expected {
 			t.Errorf("For testCase %d expected url=%s but got url=%s", i, testCase.expected, u)
-		}
-		if err != testCase.err {
-			t.Errorf("For testCase %d expected err=%s but got err=%s", i, testCase.err, err)
 		}
 	}
 }
