@@ -5,6 +5,10 @@ import (
 	"strconv"
 )
 
+const (
+	ACTIVITY_SEGMENT = "Activity"
+)
+
 type ActivityRequest struct {
 	limit           int
 	namespaces      []int
@@ -42,7 +46,7 @@ func ActivityDefaults() ActivityRequest {
 func (wa *WikiaApi) LatestActivity(ar ActivityRequest) (ActivityResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
-		[]string{"Activity", "getLatestActivity"},
+		[]string{ACTIVITY_SEGMENT, "getLatestActivity"},
 		RequestParams{
 			"limit":           strconv.Itoa(ar.limit),
 			"namespaces":      intArrToStr(ar.namespaces),
@@ -59,7 +63,7 @@ func (wa *WikiaApi) LatestActivity(ar ActivityRequest) (ActivityResult, error) {
 func (wa *WikiaApi) RecentlyChangedArticles(ar ActivityRequest) (ActivityResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
-		[]string{"Activity", "RecentlyChangedArticles"},
+		[]string{ACTIVITY_SEGMENT, "RecentlyChangedArticles"},
 		RequestParams{
 			"limit":           strconv.Itoa(ar.limit),
 			"namespaces":      intArrToStr(ar.namespaces),

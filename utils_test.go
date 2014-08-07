@@ -83,3 +83,17 @@ func TestIntArrToStr(t *testing.T) {
 		}
 	}
 }
+
+func TestIntToStr(t *testing.T) {
+	var testCases = map[int]string{
+		1:    "1",
+		1000: "1000",
+		0:    "0",
+	}
+	for i, expected := range testCases {
+		result := intToStr(i)
+		if result != expected {
+			t.Errorf("Expected number=%s but got number=%s", expected, result)
+		}
+	}
+}

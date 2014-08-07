@@ -56,3 +56,7 @@ func intArrToStr(numbers []int) string {
 	}
 	return strings.Join(strArray, SEPARATOR_INT)
 }
+
+func intToStr(number int) string {
+	return strconv.Itoa(number)
+}
