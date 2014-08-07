@@ -98,3 +98,18 @@ func TestPopularNew(t *testing.T) {
 		}
 	}
 }
+
+func TestPopularTop(t *testing.T) {
+	testCases := []TestCase{
+		{[]byte(`{"items":[{"id":1,"title":"string","url":"string","ns":2}],"basepath":"string"}`)},
+	}
+	for i, testCase := range testCases {
+		var tr ArticlesTopResult
+		_ = json.Unmarshal(testCase.blob, &tr)
+		result, _ := json.Marshal(tr)
+		if string(testCase.blob) != string(result) {
+			t.Errorf("For testCase %d expected ArticlesTopResult=%s but got ArticlesTopResult=%s",
+				i, testCase.blob, result)
+		}
+	}
+}

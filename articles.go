@@ -183,7 +183,7 @@ type ArticlesNewResult struct {
 	Quality            int                `json:"quality"`
 	Url                string             `json:"url"`
 	Creator            Creator            `json:"creator"`
-	CreationDate       string             `json:"creation_date"`
+	CreationDate       string             `json:"creation_date"` // WTF: String
 	Thumbnail          string             `json:"thumbnail"`
 	OriginalDimensions OriginalDimensions `json:"original_dimensions"`
 }
@@ -233,4 +233,38 @@ func (wa *WikiaApi) ArticlesPopular(limit int) (ArticlesPopularResult, error) {
 	}
 	var pres ArticlesPopularResult
 	return pres, json.Unmarshal(jsonBlob, &pres)
+}
+
+type ArticlesTopItem struct {
+	Id    int    `json:"id"`
+	Title string `json:"title"`
+	Url   string `json:"url"`
+	Ns    int    `json:"ns"`
+}
+
+type ArticlesTopResult struct {
+	Items    []ArticlesTopItem `json:"items"`
+	Basepath string            `json:"basepath"`
+}
+
+type ArticlesTopRequest struct {
+	namespaces []int
+	category   string
+	limit      int // WTF: String in original doc
+}
+
+// Get the most viewed articles on this wiki
+// http://muppet.wikia.com/api/v1#!/Articles/getTop_get_9
+func (wa *WikiaApi) ArticlesTop(limit int) (ArticlesTopResult, error) {
+	jsonBlob, err := getJsonBlob(
+		wa.url,
+		[]string{ARTICLES_SEGMENT, "Top"},
+		RequestParams{
+			"namespaces": intToStr(limit),
+		})
+	if err != nil {
+		return ArticlesTopResult{}, err
+	}
+	var tres ArticlesTopResult
+	return tres, json.Unmarshal(jsonBlob, &tres)
 }
