@@ -3,16 +3,26 @@ Package gowikia provides a way to accessing Wikia.com's API from go
 
 Example usage:
 
-  package main
+package main
 
-  import "github.com/aquilax/go-wikia"
+import (
+	"fmt"
+	"github.com/aquilax/go-wikia"
+)
 
-  func main() {
-      wikiaApi = NewWikiaApi("http://muppet.wikia.com")
-      latestActivity, err := wikiaApi.LatestActivity(ActivityDefaults())
-	  ...
-  }
+func main() {
+	wa, err := gowikia.NewWikiaApi("http://muppet.wikia.com/")
+	if err != nil {
+		fmt.Printf("Error creating the API: %s", err)
+	}
+	latestActivity, err := wa.ActivityLatestActivity(gowikia.DefaultActivityRequest())
+	if err != nil {
+		fmt.Printf("Error getting result: %s", err)
+	}
+	....
+}
 */
+
 package gowikia
 
 type WikiaApi struct {
