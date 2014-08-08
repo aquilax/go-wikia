@@ -74,11 +74,11 @@ type ArticlesDetailsResult struct {
 }
 
 type ArticlesDetailsRequest struct {
-	ids      []int
-	titles   []string
-	abstract int
-	width    int
-	height   int
+	Ids      []int
+	Titles   []string
+	Abstract int
+	Width    int
+	Height   int
 }
 
 func DefaultArticlesDetailsRequest() ArticlesDetailsRequest {
@@ -92,11 +92,11 @@ func (wa *WikiaApi) ArticlesDetails(params ArticlesDetailsRequest) (*ArticlesDet
 		wa.url,
 		[]string{ARTICLES_SEGMENT, ARTICLES_DETAILS_SEGMENT},
 		RequestParams{
-			"ids":      intArrToStr(params.ids),
-			"titles":   strArrToStr(params.titles),
-			"abstract": intToStr(params.abstract),
-			"width":    intToStr(params.width),
-			"height":   intToStr(params.height),
+			"ids":      intArrToStr(params.Ids),
+			"titles":   strArrToStr(params.Titles),
+			"abstract": intToStr(params.Abstract),
+			"width":    intToStr(params.Width),
+			"height":   intToStr(params.Height),
 		})
 	if err != nil {
 		return nil, err
@@ -119,10 +119,10 @@ type ArticlesListResult struct {
 }
 
 type ArticlesListRequest struct {
-	category   string
-	namespaces []int
-	limit      int
-	offset     string
+	Category   string
+	Namespaces []int
+	Limit      int
+	Offset     string
 }
 
 func DefaultArticlesListRequest() ArticlesListRequest {
@@ -136,10 +136,10 @@ func (wa *WikiaApi) ArticlesList(params ArticlesListRequest) (*ArticlesListResul
 		wa.url,
 		[]string{ARTICLES_SEGMENT, ARTICLES_LIST_SEGMENT},
 		RequestParams{
-			"category":   params.category,
-			"namespaces": intArrToStr(params.namespaces),
-			"limit":      intToStr(params.limit),
-			"offset":     params.offset,
+			"category":   params.Category,
+			"namespaces": intArrToStr(params.Namespaces),
+			"limit":      intToStr(params.Limit),
+			"offset":     params.Offset,
 		})
 	if err != nil {
 		return nil, err
