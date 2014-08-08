@@ -35,7 +35,7 @@ type SearchListParams struct {
 func (wa *WikiaApi) SearchList(params SearchListParams) (*SearchListResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
-		[]string{SEARCH_SEGMENT, "List"},
+		[]string{SEARCH_SEGMENT, SEARCH_LIST_SEGMENT},
 		RequestParams{
 			"query":             params.Query,
 			"type":              params.Type,

@@ -22,7 +22,7 @@ type RelatedPagesListResult struct {
 func (wa *WikiaApi) RelatedPagesList(ids []int, limit int) (*RelatedPagesListResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
-		[]string{RELATED_PAGES_SEGMENT, "List"},
+		[]string{RELATED_PAGES_SEGMENT, RELATED_PAGES_LIST_SEGMENT},
 		RequestParams{
 			"ids":   intArrToStr(ids),
 			"limit": intToStr(limit),

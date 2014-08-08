@@ -23,7 +23,7 @@ type UserDetailsResult struct {
 func (wa *WikiaApi) UserDetails(ids []int, size int) (*UserDetailsResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
-		[]string{USER_SEGMENT, "Details"},
+		[]string{USER_SEGMENT, USER_DETAILS_SEGMENT},
 		RequestParams{
 			"ids":  intArrToStr(ids),
 			"size": intToStr(size),

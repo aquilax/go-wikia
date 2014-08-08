@@ -33,7 +33,7 @@ func ActivityDefaults() ActivityRequest {
 func (wa *WikiaApi) ActivityLatestActivity(params ActivityRequest) (*ActivityResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
-		[]string{ACTIVITY_SEGMENT, "LatestActivity"},
+		[]string{ACTIVITY_SEGMENT, ACTIVITY_LATEST_ACLTIVITY_SEGMENT},
 		RequestParams{
 			"limit":           strconv.Itoa(params.limit),
 			"namespaces":      intArrToStr(params.namespaces),
@@ -51,7 +51,7 @@ func (wa *WikiaApi) ActivityLatestActivity(params ActivityRequest) (*ActivityRes
 func (wa *WikiaApi) ActivityRecentlyChangedArticles(params ActivityRequest) (*ActivityResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
-		[]string{ACTIVITY_SEGMENT, "RecentlyChangedArticles"},
+		[]string{ACTIVITY_SEGMENT, ACTIVITY_RECENTLY_CHANGED_ARTICLES_SEGMENT},
 		RequestParams{
 			"limit":           strconv.Itoa(params.limit),
 			"namespaces":      intArrToStr(params.namespaces),

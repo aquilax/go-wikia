@@ -36,7 +36,7 @@ type ArticlesAsSimpleJsonResult struct {
 func (wa *WikiaApi) ArticlesAsSimpleJson(id int) (*ArticlesAsSimpleJsonResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
-		[]string{ARTICLES_SEGMENT, "AsSimpleJson"},
+		[]string{ARTICLES_SEGMENT, ARTICLES_AS_SIMPLE_JSON_SEGMENT},
 		RequestParams{
 			"id": intToStr(id),
 		})
@@ -89,7 +89,7 @@ func DetailsDefaults() DetailsRequest {
 func (wa *WikiaApi) ArticlesDetails(params DetailsRequest) (*ArticlesDetailsResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
-		[]string{ARTICLES_SEGMENT, "Details"},
+		[]string{ARTICLES_SEGMENT, ARTICLES_DETAILS_SEGMENT},
 		RequestParams{
 			"ids":      intArrToStr(params.ids),
 			"titles":   strArrToStr(params.titles),
@@ -129,7 +129,7 @@ type ListRequest struct {
 func (wa *WikiaApi) ArticlesList(params ListRequest) (*ArticlesListResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
-		[]string{ARTICLES_SEGMENT, "List"},
+		[]string{ARTICLES_SEGMENT, ARTICLES_LIST_SEGMENT},
 		RequestParams{
 			"category":   params.category,
 			"namespaces": intArrToStr(params.namespaces),
@@ -161,7 +161,7 @@ type ArticlesMostLinkedResult struct {
 func (wa *WikiaApi) ArticlesMostLinked() (*ArticlesMostLinkedResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
-		[]string{ARTICLES_SEGMENT, "MostLinked"},
+		[]string{ARTICLES_SEGMENT, ARTICLES_MOST_LINKED_SEGMENT},
 		RequestParams{})
 	if err != nil {
 		return nil, err
@@ -199,7 +199,7 @@ type ArticlesNewRequest struct {
 func (wa *WikiaApi) ArticlesNew(params ArticlesNewRequest) (*ArticlesNewResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
-		[]string{ARTICLES_SEGMENT, "New"},
+		[]string{ARTICLES_SEGMENT, ARTICLES_NEW_SEGMENT},
 		RequestParams{
 			"namespaces":        intArrToStr(params.Namespaces),
 			"limit":             intToStr(params.Limit),
@@ -228,7 +228,7 @@ type ArticlesPopularResult struct {
 func (wa *WikiaApi) ArticlesPopular(limit int) (*ArticlesPopularResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
-		[]string{ARTICLES_SEGMENT, "Popular"},
+		[]string{ARTICLES_SEGMENT, ARTICLES_POPULAR_SEGMENT},
 		RequestParams{
 			"limit": intToStr(limit),
 		})
@@ -262,7 +262,7 @@ type ArticlesTopRequest struct {
 func (wa *WikiaApi) ArticlesTop(params ArticlesTopRequest) (*ArticlesTopResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
-		[]string{ARTICLES_SEGMENT, "Top"},
+		[]string{ARTICLES_SEGMENT, ARTICLES_TOP_SEGMENT},
 		RequestParams{
 			"namespaces": intArrToStr(params.Namespaces),
 			"category":   params.Category,
@@ -307,7 +307,7 @@ type TopByHubRequest struct {
 func (wa *WikiaApi) ArticlesTopByHub(params TopByHubRequest) (*ArticlesTopByHubResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
-		[]string{ARTICLES_SEGMENT, "Top"},
+		[]string{ARTICLES_SEGMENT, ARTICLES_TOP_BY_HUB_SEGMENT},
 		RequestParams{
 			"hub":        params.Hub,
 			"lang":       params.Lang,

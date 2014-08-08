@@ -24,7 +24,7 @@ type NavigationDataResult struct {
 func (wa *WikiaApi) NavigationData() (*NavigationDataResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
-		[]string{NAVIGATION_SEGMENT, "Data"},
+		[]string{NAVIGATION_SEGMENT, NAVIGATION_DATA_SEGMENT},
 		RequestParams{})
 	if err != nil {
 		return nil, err
