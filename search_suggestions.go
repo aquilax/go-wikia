@@ -17,7 +17,7 @@ type SearchSuggestionsListResult struct {
 func (wa *WikiaApi) SearchSuggestionsList(query string) (SearchSuggestionsListResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
-		[]string{SEARCH_SEGMENT, "List"},
+		[]string{SEARCH_SUGGESTIONS_SEGMENT, "List"},
 		RequestParams{
 			"query": query,
 		})
