@@ -22,20 +22,20 @@ func TestJsonStructures(t *testing.T) {
 		},
 		{
 			[]byte(`{"sections":{"title":"string","level":1,"content":[{"type":"string","text":"string","elements":[{"text":"string","elements":[]}]}],"images":[{"src":"string","caption":"string"}]}}`),
-			func() interface{} { return ArticleAsSimpleJsonResult{} },
+			func() interface{} { return ArticlesAsSimpleJsonResult{} },
 		},
 
 		{
 			[]byte(`{"items":[{"id":1,"title":"string","ns":2,"url":"string","revision":{"id":3,"user":"string","user_id":4,"timestamp":5},"comments":6,"type":"string","abstract":"string","thumbnail":"string","original_dimensions":{"width":7,"height":8}}],"basepath":"string"}`),
-			func() interface{} { return ArticleDetailsResult{} },
+			func() interface{} { return ArticlesDetailsResult{} },
 		},
 		{
 			[]byte(`{"items":[{"id":1,"title":"string","url":"string","ns":1}],"offset":"string","basepath":"string"}`),
-			func() interface{} { return ListResult{} },
+			func() interface{} { return ArticlesListResult{} },
 		},
 		{
 			[]byte(`{"items":[{"id":1,"title":"string","url":"string","ns":2,"backlink_cnt":3}],"basepath":"string"}`),
-			func() interface{} { return MostLinkedResult{} },
+			func() interface{} { return ArticlesMostLinkedResult{} },
 		},
 		{
 			[]byte(`{"id":1,"ns":2,"title":"string","abstract":"string","quality":3,"url":"string","creator":{"avatar":"string","name":"string"},"creation_date":"string","thumbnail":"string","original_dimensions":{"width":5,"height":6}}`),

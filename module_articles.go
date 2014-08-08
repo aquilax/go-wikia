@@ -27,13 +27,13 @@ type AsSimpleJsonSections struct {
 	Images  []AsSimpleJsonImagesItem  `json:"images"`
 }
 
-type ArticleAsSimpleJsonResult struct {
+type ArticlesAsSimpleJsonResult struct {
 	Sections AsSimpleJsonSections `json:"sections"`
 }
 
 // Get simplified article contents
 // http://muppet.wikia.com/api/v1#!/Articles/getAsSimpleJson_get_0
-func (wa *WikiaApi) ArticlesAsSimpleJson(id int) (ArticleAsSimpleJsonResult, error) {
+func (wa *WikiaApi) ArticlesAsSimpleJson(id int) (*ArticlesAsSimpleJsonResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
 		[]string{ARTICLES_SEGMENT, "AsSimpleJson"},
@@ -41,9 +41,9 @@ func (wa *WikiaApi) ArticlesAsSimpleJson(id int) (ArticleAsSimpleJsonResult, err
 			"id": intToStr(id),
 		})
 	if err != nil {
-		return ArticleAsSimpleJsonResult{}, err
+		return nil, err
 	}
-	var result ArticleAsSimpleJsonResult
+	var result *ArticlesAsSimpleJsonResult
 	return result, json.Unmarshal(jsonBlob, &result)
 }
 
@@ -67,7 +67,7 @@ type DetailsResultItem struct {
 	OriginalDimensions OriginalDimensions        `json:"original_dimensions"`
 }
 
-type ArticleDetailsResult struct {
+type ArticlesDetailsResult struct {
 	Items    []DetailsResultItem `json:"items"`
 	Basepath string              `json:"basepath"`
 }
@@ -86,7 +86,7 @@ func DetailsDefaults() DetailsRequest {
 
 // Get details about one or more articles
 // http://muppet.wikia.com/api/v1#!/Articles/getDetails_get_1
-func (wa *WikiaApi) ArticlesDetails(params DetailsRequest) (ArticleDetailsResult, error) {
+func (wa *WikiaApi) ArticlesDetails(params DetailsRequest) (*ArticlesDetailsResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
 		[]string{ARTICLES_SEGMENT, "Details"},
@@ -98,9 +98,9 @@ func (wa *WikiaApi) ArticlesDetails(params DetailsRequest) (ArticleDetailsResult
 			"height":   intToStr(params.height),
 		})
 	if err != nil {
-		return ArticleDetailsResult{}, err
+		return nil, err
 	}
-	var result ArticleDetailsResult
+	var result *ArticlesDetailsResult
 	return result, json.Unmarshal(jsonBlob, &result)
 }
 
@@ -111,7 +111,7 @@ type ListResultItem struct {
 	Ns    int    `json:"ns"`
 }
 
-type ListResult struct {
+type ArticlesListResult struct {
 	Items    []ListResultItem `json:"items"`
 	Offset   string           `json:"offset"`
 	Basepath string           `json:"basepath"`
@@ -126,7 +126,7 @@ type ListRequest struct {
 
 // Get a list of pages on the current wiki
 // http://muppet.wikia.com/api/v1#!/Articles/getList_get_3
-func (wa *WikiaApi) ArticlesList(params ListRequest) (ListResult, error) {
+func (wa *WikiaApi) ArticlesList(params ListRequest) (*ArticlesListResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
 		[]string{ARTICLES_SEGMENT, "List"},
@@ -137,9 +137,9 @@ func (wa *WikiaApi) ArticlesList(params ListRequest) (ListResult, error) {
 			"offset":     params.offset,
 		})
 	if err != nil {
-		return ListResult{}, err
+		return nil, err
 	}
-	var result ListResult
+	var result *ArticlesListResult
 	return result, json.Unmarshal(jsonBlob, &result)
 }
 
@@ -151,22 +151,22 @@ type MostLinkedResultItem struct {
 	BackLinkCnt int    `json:"backlink_cnt"`
 }
 
-type MostLinkedResult struct {
+type ArticlesMostLinkedResult struct {
 	Items    []MostLinkedResultItem `json:"items"`
 	Basepath string                 `json:"basepath"`
 }
 
 // Get the most linked articles on this wiki
 // http://muppet.wikia.com/api/v1#!/Articles/getTop_get_4
-func (wa *WikiaApi) ArticlesMostLinked() (MostLinkedResult, error) {
+func (wa *WikiaApi) ArticlesMostLinked() (*ArticlesMostLinkedResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
 		[]string{ARTICLES_SEGMENT, "MostLinked"},
 		RequestParams{})
 	if err != nil {
-		return MostLinkedResult{}, err
+		return nil, err
 	}
-	var result MostLinkedResult
+	var result *ArticlesMostLinkedResult
 	return result, json.Unmarshal(jsonBlob, &result)
 }
 
@@ -196,7 +196,7 @@ type ArticlesNewRequest struct {
 
 // Get list of new articles on this wiki
 // http://muppet.wikia.com/api/v1#!/Articles/getNew_get_6
-func (wa *WikiaApi) ArticlesNew(params ArticlesNewRequest) (ArticlesNewResult, error) {
+func (wa *WikiaApi) ArticlesNew(params ArticlesNewRequest) (*ArticlesNewResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
 		[]string{ARTICLES_SEGMENT, "New"},
@@ -206,9 +206,9 @@ func (wa *WikiaApi) ArticlesNew(params ArticlesNewRequest) (ArticlesNewResult, e
 			"minArticleQuality": intToStr(params.MinArticleQuality),
 		})
 	if err != nil {
-		return ArticlesNewResult{}, err
+		return nil, err
 	}
-	var result ArticlesNewResult
+	var result *ArticlesNewResult
 	return result, json.Unmarshal(jsonBlob, &result)
 }
 
@@ -225,7 +225,7 @@ type ArticlesPopularResult struct {
 
 // Get popular articles for the current wiki (from the beginning of time)
 // http://muppet.wikia.com/api/v1#!/Articles/getPopular_get_7
-func (wa *WikiaApi) ArticlesPopular(limit int) (ArticlesPopularResult, error) {
+func (wa *WikiaApi) ArticlesPopular(limit int) (*ArticlesPopularResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
 		[]string{ARTICLES_SEGMENT, "Popular"},
@@ -233,9 +233,9 @@ func (wa *WikiaApi) ArticlesPopular(limit int) (ArticlesPopularResult, error) {
 			"limit": intToStr(limit),
 		})
 	if err != nil {
-		return ArticlesPopularResult{}, err
+		return nil, err
 	}
-	var result ArticlesPopularResult
+	var result *ArticlesPopularResult
 	return result, json.Unmarshal(jsonBlob, &result)
 }
 
@@ -259,7 +259,7 @@ type ArticlesTopRequest struct {
 
 // Get the most viewed articles on this wiki
 // http://muppet.wikia.com/api/v1#!/Articles/getTop_get_9
-func (wa *WikiaApi) ArticlesTop(params ArticlesTopRequest) (ArticlesTopResult, error) {
+func (wa *WikiaApi) ArticlesTop(params ArticlesTopRequest) (*ArticlesTopResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
 		[]string{ARTICLES_SEGMENT, "Top"},
@@ -269,9 +269,9 @@ func (wa *WikiaApi) ArticlesTop(params ArticlesTopRequest) (ArticlesTopResult, e
 			"limit":      intToStr(params.Limit),
 		})
 	if err != nil {
-		return ArticlesTopResult{}, err
+		return nil, err
 	}
-	var result ArticlesTopResult
+	var result *ArticlesTopResult
 	return result, json.Unmarshal(jsonBlob, &result)
 }
 
@@ -304,7 +304,7 @@ type TopByHubRequest struct {
 
 // Get the top articles by pageviews for a hub
 // http://muppet.wikia.com/api/v1#!/Articles/getTopByHub_get_11
-func (wa *WikiaApi) ArticlesTopByHub(params TopByHubRequest) (ArticlesTopByHubResult, error) {
+func (wa *WikiaApi) ArticlesTopByHub(params TopByHubRequest) (*ArticlesTopByHubResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
 		[]string{ARTICLES_SEGMENT, "Top"},
@@ -314,8 +314,8 @@ func (wa *WikiaApi) ArticlesTopByHub(params TopByHubRequest) (ArticlesTopByHubRe
 			"namespaces": intArrToStr(params.Namespaces),
 		})
 	if err != nil {
-		return ArticlesTopByHubResult{}, err
+		return nil, err
 	}
-	var result ArticlesTopByHubResult
+	var result *ArticlesTopByHubResult
 	return result, json.Unmarshal(jsonBlob, &result)
 }

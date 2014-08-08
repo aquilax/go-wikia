@@ -14,7 +14,7 @@ type SearchSuggestionsListResult struct {
 
 // Find suggested phrases for chosen query
 // http://muppet.wikia.com/api/v1#!/SearchSuggestions/getList_get_0
-func (wa *WikiaApi) SearchSuggestionsList(query string) (SearchSuggestionsListResult, error) {
+func (wa *WikiaApi) SearchSuggestionsList(query string) (*SearchSuggestionsListResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
 		[]string{SEARCH_SUGGESTIONS_SEGMENT, "List"},
@@ -22,8 +22,8 @@ func (wa *WikiaApi) SearchSuggestionsList(query string) (SearchSuggestionsListRe
 			"query": query,
 		})
 	if err != nil {
-		return SearchSuggestionsListResult{}, err
+		return nil, err
 	}
-	var result SearchSuggestionsListResult
+	var result *SearchSuggestionsListResult
 	return result, json.Unmarshal(jsonBlob, &result)
 }

@@ -20,7 +20,7 @@ type UserDetailsResult struct {
 
 // Find suggested phrases for chosen query
 // http://muppet.wikia.com/api/v1#!/SearchSuggestions/getList_get_0
-func (wa *WikiaApi) UserDetails(ids []int, size int) (UserDetailsResult, error) {
+func (wa *WikiaApi) UserDetails(ids []int, size int) (*UserDetailsResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
 		[]string{USER_SEGMENT, "Details"},
@@ -29,8 +29,8 @@ func (wa *WikiaApi) UserDetails(ids []int, size int) (UserDetailsResult, error) 
 			"size": intToStr(size),
 		})
 	if err != nil {
-		return UserDetailsResult{}, err
+		return nil, err
 	}
-	var result UserDetailsResult
+	var result *UserDetailsResult
 	return result, json.Unmarshal(jsonBlob, &result)
 }

@@ -19,7 +19,7 @@ type RelatedPagesListResult struct {
 
 // Get pages related to a given article ID
 // http://muppet.wikia.com/api/v1#!/RelatedPages/getList_get_0
-func (wa *WikiaApi) RelatedPagesList(ids []int, limit int) (RelatedPagesListResult, error) {
+func (wa *WikiaApi) RelatedPagesList(ids []int, limit int) (*RelatedPagesListResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
 		[]string{RELATED_PAGES_SEGMENT, "List"},
@@ -28,8 +28,8 @@ func (wa *WikiaApi) RelatedPagesList(ids []int, limit int) (RelatedPagesListResu
 			"limit": intToStr(limit),
 		})
 	if err != nil {
-		return RelatedPagesListResult{}, err
+		return nil, err
 	}
-	var result RelatedPagesListResult
+	var result *RelatedPagesListResult
 	return result, json.Unmarshal(jsonBlob, &result)
 }

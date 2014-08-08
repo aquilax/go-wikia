@@ -32,7 +32,7 @@ type SearchListParams struct {
 
 // Do search for given phrase
 // http://muppet.wikia.com/api/v1#!/Search/getList_get_0
-func (wa *WikiaApi) SearchList(params SearchListParams) (SearchListResult, error) {
+func (wa *WikiaApi) SearchList(params SearchListParams) (*SearchListResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
 		[]string{SEARCH_SEGMENT, "List"},
@@ -46,8 +46,8 @@ func (wa *WikiaApi) SearchList(params SearchListParams) (SearchListResult, error
 			"namespaces":        intArrToStr(params.Namespaces),
 		})
 	if err != nil {
-		return SearchListResult{}, err
+		return nil, err
 	}
-	var result SearchListResult
+	var result *SearchListResult
 	return result, json.Unmarshal(jsonBlob, &result)
 }

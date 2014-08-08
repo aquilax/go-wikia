@@ -33,7 +33,7 @@ func ActivityDefaults() ActivityRequest {
 func (wa *WikiaApi) ActivityLatestActivity(params ActivityRequest) (*ActivityResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
-		[]string{ACTIVITY_SEGMENT, "getLatestActivity"},
+		[]string{ACTIVITY_SEGMENT, "LatestActivity"},
 		RequestParams{
 			"limit":           strconv.Itoa(params.limit),
 			"namespaces":      intArrToStr(params.namespaces),
@@ -43,12 +43,12 @@ func (wa *WikiaApi) ActivityLatestActivity(params ActivityRequest) (*ActivityRes
 		return nil, err
 	}
 	var result *ActivityResult
-	return result, json.Unmarshal(jsonBlob, result)
+	return result, json.Unmarshal(jsonBlob, &result)
 }
 
 // Get recently changed articles
 // http://muppet.wikia.com/api/v1#!/Activity/getRecentlyChangedArticles_get_1
-func (wa *WikiaApi) ActivityRecentlyChangedArticles(params ActivityRequest) (ActivityResult, error) {
+func (wa *WikiaApi) ActivityRecentlyChangedArticles(params ActivityRequest) (*ActivityResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
 		[]string{ACTIVITY_SEGMENT, "RecentlyChangedArticles"},
@@ -58,8 +58,8 @@ func (wa *WikiaApi) ActivityRecentlyChangedArticles(params ActivityRequest) (Act
 			"allowDuplicates": strconv.FormatBool(params.allowDuplicates),
 		})
 	if err != nil {
-		return ActivityResult{}, err
+		return nil, err
 	}
-	var result ActivityResult
+	var result *ActivityResult
 	return result, json.Unmarshal(jsonBlob, &result)
 }

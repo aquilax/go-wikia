@@ -21,14 +21,14 @@ type NavigationDataResult struct {
 
 // Get wiki navigation links (the main menu of given wiki)
 // http://muppet.wikia.com/api/v1#!/Navigation/getData_get_0
-func (wa *WikiaApi) NavigationData() (NavigationDataResult, error) {
+func (wa *WikiaApi) NavigationData() (*NavigationDataResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
 		[]string{NAVIGATION_SEGMENT, "Data"},
 		RequestParams{})
 	if err != nil {
-		return NavigationDataResult{}, err
+		return nil, err
 	}
-	var result NavigationDataResult
+	var result *NavigationDataResult
 	return result, json.Unmarshal(jsonBlob, &result)
 }
