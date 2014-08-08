@@ -22,7 +22,7 @@ type generatePathTestCase struct {
 }
 
 type generateQueryTestCase struct {
-	params   map[string]string
+	params   RequestParams
 	expected string
 }
 
@@ -83,7 +83,7 @@ func TestGeneratePath(t *testing.T) {
 
 func TestGenerateQuery(t *testing.T) {
 	var testCases = []generateQueryTestCase{
-		{map[string]string{"a": "1", "b": "2"}, "a=1&b=2"},
+		{RequestParams{"a": "1", "b": "2"}, "a=1&b=2"},
 	}
 	for i, testCase := range testCases {
 		query := generateQuery(testCase.params)

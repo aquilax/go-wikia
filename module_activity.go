@@ -30,36 +30,36 @@ func ActivityDefaults() ActivityRequest {
 
 // Get latest activity information
 // http://muppet.wikia.com/api/v1#!/Activity/getLatestActivity_get_0
-func (wa *WikiaApi) LatestActivity(ar ActivityRequest) (ActivityResult, error) {
+func (wa *WikiaApi) ActivityLatestActivity(params ActivityRequest) (*ActivityResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
 		[]string{ACTIVITY_SEGMENT, "getLatestActivity"},
 		RequestParams{
-			"limit":           strconv.Itoa(ar.limit),
-			"namespaces":      intArrToStr(ar.namespaces),
-			"allowDuplicates": strconv.FormatBool(ar.allowDuplicates),
+			"limit":           strconv.Itoa(params.limit),
+			"namespaces":      intArrToStr(params.namespaces),
+			"allowDuplicates": strconv.FormatBool(params.allowDuplicates),
 		})
 	if err != nil {
-		return ActivityResult{}, err
+		return nil, err
 	}
-	var ares ActivityResult
-	return ares, json.Unmarshal(jsonBlob, &ares)
+	var result *ActivityResult
+	return result, json.Unmarshal(jsonBlob, result)
 }
 
 // Get recently changed articles
 // http://muppet.wikia.com/api/v1#!/Activity/getRecentlyChangedArticles_get_1
-func (wa *WikiaApi) RecentlyChangedArticles(ar ActivityRequest) (ActivityResult, error) {
+func (wa *WikiaApi) ActivityRecentlyChangedArticles(params ActivityRequest) (ActivityResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
 		[]string{ACTIVITY_SEGMENT, "RecentlyChangedArticles"},
 		RequestParams{
-			"limit":           strconv.Itoa(ar.limit),
-			"namespaces":      intArrToStr(ar.namespaces),
-			"allowDuplicates": strconv.FormatBool(ar.allowDuplicates),
+			"limit":           strconv.Itoa(params.limit),
+			"namespaces":      intArrToStr(params.namespaces),
+			"allowDuplicates": strconv.FormatBool(params.allowDuplicates),
 		})
 	if err != nil {
 		return ActivityResult{}, err
 	}
-	var ares ActivityResult
-	return ares, json.Unmarshal(jsonBlob, &ares)
+	var result ActivityResult
+	return result, json.Unmarshal(jsonBlob, &result)
 }

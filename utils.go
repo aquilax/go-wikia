@@ -7,22 +7,6 @@ import (
 	"strings"
 )
 
-const (
-	API_SEGMENT = "api"
-	API_VERSION = "v1"
-
-	SEPARATOR_PATH  = "/"
-	SEPARATOR_ARRAY = ","
-
-	ACTIVITY_SEGMENT           = "Activity"
-	ARTICLES_SEGMENT           = "Articles"
-	NAVIGATION_SEGMENT         = "Navigation"
-	RELATED_PAGES_SEGMENT      = "RelatedPages"
-	SEARCH_SEGMENT             = "Search"
-	SEARCH_SUGGESTIONS_SEGMENT = "SearchSuggestions"
-	USER_SEGMENT               = "User"
-)
-
 func isValidUrl(u string) (bool, error) {
 	ur, err := url.Parse(u)
 	if err != nil {
