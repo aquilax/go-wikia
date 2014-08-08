@@ -24,7 +24,7 @@ type ActivityResult struct {
 }
 
 // Provides default values for LatestActivity function
-func ActivityDefaults() ActivityRequest {
+func DefaultActivityRequest() ActivityRequest {
 	return ActivityRequest{10, []int{0}, true}
 }
 

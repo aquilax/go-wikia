@@ -13,8 +13,8 @@ type RelatedPagesListItem struct {
 }
 
 type RelatedPagesListResult struct {
-	Items    []RelatedPagesListItem `json:"items"`
-	Basepath string                 `json:"basepath"`
+	Items    map[string][]RelatedPagesListItem `json:"items"`
+	Basepath string                            `json:"basepath"`
 }
 
 // Get pages related to a given article ID

@@ -15,7 +15,7 @@ type SearchListItem struct {
 type SearchListResult struct {
 	Total        int              `json:"total"`
 	Batches      int              `json:"batches"`
-	CurrentBatch int              `json:"currentBatch"`
+	CurrentBatch string           `json:"currentBatch"` // WTF String
 	Next         int              `json:"next"`
 	Items        []SearchListItem `json:"items"`
 }
@@ -28,6 +28,10 @@ type SearchListParams struct {
 	MinArticleQuality int
 	Batch             int
 	Namespaces        []int
+}
+
+func DefaultSearchListParams() SearchListParams {
+	return SearchListParams{"test", "", "", 25, 10, 0, []int{0}}
 }
 
 // Do search for given phrase

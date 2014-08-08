@@ -16,7 +16,7 @@ type NavigationDataList struct {
 }
 
 type NavigationDataResult struct {
-	Navigation []NavigationDataList `json:"navigation"`
+	Navigation NavigationDataList `json:"navigation"`
 }
 
 // Get wiki navigation links (the main menu of given wiki)

@@ -4,31 +4,31 @@ import (
 	"encoding/json"
 )
 
-type AsSimpleJsonElementsItem struct {
-	Text     string                     `json:"text"`
-	Elements []AsSimpleJsonElementsItem `json:"elements"`
+type ArticlesAsSimpleJsonElementsItem struct {
+	Text     string                             `json:"text"`
+	Elements []ArticlesAsSimpleJsonElementsItem `json:"elements"`
 }
 
-type AsSimpleJsonContentItem struct {
-	Type     string                     `json:"type"`
-	Text     string                     `json:"text"`
-	Elements []AsSimpleJsonElementsItem `json:"elements"`
+type ArticlesAsSimpleJsonContentItem struct {
+	Type     string                             `json:"type"`
+	Text     string                             `json:"text"`
+	Elements []ArticlesAsSimpleJsonElementsItem `json:"elements"`
 }
 
-type AsSimpleJsonImagesItem struct {
+type ArticlesAsSimpleJsonImagesItem struct {
 	Src     string `json:"src"`
 	Caption string `json:"caption"`
 }
 
-type AsSimpleJsonSections struct {
-	Title   string                    `json:"title"`
-	Level   int                       `json:"level"`
-	Content []AsSimpleJsonContentItem `json:"content"`
-	Images  []AsSimpleJsonImagesItem  `json:"images"`
+type ArticlesAsSimpleJsonSection struct {
+	Title   string                            `json:"title"`
+	Level   int                               `json:"level"`
+	Content []ArticlesAsSimpleJsonContentItem `json:"content"`
+	Images  []ArticlesAsSimpleJsonImagesItem  `json:"images"`
 }
 
 type ArticlesAsSimpleJsonResult struct {
-	Sections AsSimpleJsonSections `json:"sections"`
+	Sections []ArticlesAsSimpleJsonSection `json:"sections"`
 }
 
 // Get simplified article contents
@@ -47,32 +47,33 @@ func (wa *WikiaApi) ArticlesAsSimpleJson(id int) (*ArticlesAsSimpleJsonResult, e
 	return result, json.Unmarshal(jsonBlob, &result)
 }
 
-type DetailsResultItemRevision struct {
+type ArticlesDetailsResultItemRevision struct {
 	Id        int    `json:"id"`
 	User      string `json:"user"`
 	UserId    int    `json:"user_id"`
-	Timestamp int    `json:"timestamp"`
+	Timestamp string `json:"timestamp"` //WTF: TS as string
 }
 
-type DetailsResultItem struct {
-	Id                 int                       `json:"id"`
-	Title              string                    `json:"title"`
-	Ns                 int                       `json:"ns"`
-	Url                string                    `json:"url"`
-	Revision           DetailsResultItemRevision `json:"revision"`
-	Comments           int                       `json:"comments"`
-	Type               string                    `json:"type"`
-	Abstract           string                    `json:"abstract"`
-	Thumbnail          string                    `json:"thumbnail"`
-	OriginalDimensions OriginalDimensions        `json:"original_dimensions"`
+type ArticlesDetailsResultItem struct {
+	Id                 int                               `json:"id"`
+	Title              string                            `json:"title"`
+	Ns                 int                               `json:"ns"`
+	Url                string                            `json:"url"`
+	Revision           ArticlesDetailsResultItemRevision `json:"revision"`
+	Comments           int                               `json:"comments"`
+	Type               string                            `json:"type"`
+	Abstract           string                            `json:"abstract"`
+	Thumbnail          string                            `json:"thumbnail"`
+	OriginalDimensions OriginalDimensions                `json:"original_dimensions"`
+	//Metadata	// WTF: Not documented
 }
 
 type ArticlesDetailsResult struct {
-	Items    []DetailsResultItem `json:"items"`
-	Basepath string              `json:"basepath"`
+	Items    map[string]ArticlesDetailsResultItem `json:"items"`
+	Basepath string                               `json:"basepath"`
 }
 
-type DetailsRequest struct {
+type ArticlesDetailsRequest struct {
 	ids      []int
 	titles   []string
 	abstract int
@@ -80,13 +81,13 @@ type DetailsRequest struct {
 	height   int
 }
 
-func DetailsDefaults() DetailsRequest {
-	return DetailsRequest{[]int{50}, []string{}, 100, 200, 200}
+func DefaultArticlesDetailsRequest() ArticlesDetailsRequest {
+	return ArticlesDetailsRequest{[]int{50}, []string{}, 100, 200, 200}
 }
 
 // Get details about one or more articles
 // http://muppet.wikia.com/api/v1#!/Articles/getDetails_get_1
-func (wa *WikiaApi) ArticlesDetails(params DetailsRequest) (*ArticlesDetailsResult, error) {
+func (wa *WikiaApi) ArticlesDetails(params ArticlesDetailsRequest) (*ArticlesDetailsResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
 		[]string{ARTICLES_SEGMENT, ARTICLES_DETAILS_SEGMENT},
@@ -117,16 +118,20 @@ type ArticlesListResult struct {
 	Basepath string           `json:"basepath"`
 }
 
-type ListRequest struct {
+type ArticlesListRequest struct {
 	category   string
 	namespaces []int
 	limit      int
 	offset     string
 }
 
+func DefaultArticlesListRequest() ArticlesListRequest {
+	return ArticlesListRequest{"", []int{0}, 25, ""}
+}
+
 // Get a list of pages on the current wiki
 // http://muppet.wikia.com/api/v1#!/Articles/getList_get_3
-func (wa *WikiaApi) ArticlesList(params ListRequest) (*ArticlesListResult, error) {
+func (wa *WikiaApi) ArticlesList(params ArticlesListRequest) (*ArticlesListResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
 		[]string{ARTICLES_SEGMENT, ARTICLES_LIST_SEGMENT},
@@ -144,11 +149,11 @@ func (wa *WikiaApi) ArticlesList(params ListRequest) (*ArticlesListResult, error
 }
 
 type MostLinkedResultItem struct {
-	Id          int    `json:"id"`
+	Id          string `json:"id"` // WTF: String
 	Title       string `json:"title"`
 	Url         string `json:"url"`
 	Ns          int    `json:"ns"`
-	BackLinkCnt int    `json:"backlink_cnt"`
+	BackLinkCnt int    `json:"backlink_cnt"` // WTF: missing from the result
 }
 
 type ArticlesMostLinkedResult struct {
@@ -175,7 +180,7 @@ type Creator struct {
 	Name   string `json:"name"`
 }
 
-type ArticlesNewResult struct {
+type ArticlesNewResultItem struct {
 	Id                 int                `json:"id"`
 	Ns                 int                `json:"ns"`
 	Title              string             `json:"title"`
@@ -188,10 +193,19 @@ type ArticlesNewResult struct {
 	OriginalDimensions OriginalDimensions `json:"original_dimensions"`
 }
 
+// WTF: Wrong model schema
+type ArticlesNewResult struct {
+	Items []ArticlesNewResultItem `json:"items"`
+}
+
 type ArticlesNewRequest struct {
 	Namespaces        []int
 	Limit             int
 	MinArticleQuality int
+}
+
+func DefaultArticlesNewRequest() ArticlesNewRequest {
+	return ArticlesNewRequest{[]int{0}, 20, 10}
 }
 
 // Get list of new articles on this wiki
@@ -257,6 +271,10 @@ type ArticlesTopRequest struct {
 	Limit      int // WTF: String in original doc
 }
 
+func DefaultArticlesTopRequest() ArticlesTopRequest {
+	return ArticlesTopRequest{[]int{0}, "", 10}
+}
+
 // Get the most viewed articles on this wiki
 // http://muppet.wikia.com/api/v1#!/Articles/getTop_get_9
 func (wa *WikiaApi) ArticlesTop(params ArticlesTopRequest) (*ArticlesTopResult, error) {
@@ -292,19 +310,24 @@ type ArticlesTopByHubItem struct {
 	Articles []ArticlesTopByHubArticle `json:"articles"`
 }
 
+// WTF: Does not work BadRequest
 type ArticlesTopByHubResult struct {
 	Items []ArticlesTopByHubItem `json:"items"`
 }
 
-type TopByHubRequest struct {
+type ArticlesTopByHubRequest struct {
 	Hub        string
 	Lang       string
 	Namespaces []int
 }
 
+func DefaultArticlesTopByHubRequest() ArticlesTopByHubRequest {
+	return ArticlesTopByHubRequest{"gaming", "en", []int{0}}
+}
+
 // Get the top articles by pageviews for a hub
 // http://muppet.wikia.com/api/v1#!/Articles/getTopByHub_get_11
-func (wa *WikiaApi) ArticlesTopByHub(params TopByHubRequest) (*ArticlesTopByHubResult, error) {
+func (wa *WikiaApi) ArticlesTopByHub(params ArticlesTopByHubRequest) (*ArticlesTopByHubResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
 		[]string{ARTICLES_SEGMENT, ARTICLES_TOP_BY_HUB_SEGMENT},
