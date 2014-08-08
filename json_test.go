@@ -34,8 +34,16 @@ func TestJsonStructures(t *testing.T) {
 			func() interface{} { return ArticlesListResult{} },
 		},
 		{
+			[]byte(`{"items":[{"id":"int","title":"string","ns":"int","url":"string","revision":{"id":"int","user":"string","user_id":"int","timestamp":"int"},"comments":"int","type":"string","abstract":"string","thumbnail":"string","original_dimensions":{"width":"int","height":"int"}}],"offset":"string","basepath":"string"}`),
+			func() interface{} { return ArticlesListExpandedResult{} },
+		},
+		{
 			[]byte(`{"items":[{"id":1,"title":"string","url":"string","ns":2,"backlink_cnt":3}],"basepath":"string"}`),
 			func() interface{} { return ArticlesMostLinkedResult{} },
+		},
+		{
+			[]byte(`{"items":[{"id":"int","title":"string","url":"string","ns":"int","revision":{"id":"int","user":"string","user_id":"int","timestamp":"int"},"comments":"int","type":"string","abstract":"string","backlink_cnt":"int"}],"basepath":"string"}`),
+			func() interface{} { return ArticlesMostLinkedExpandedResult{} },
 		},
 		{
 			[]byte(`{"id":1,"ns":2,"title":"string","abstract":"string","quality":3,"url":"string","creator":{"avatar":"string","name":"string"},"creation_date":"string","thumbnail":"string","original_dimensions":{"width":5,"height":6}}`),
@@ -44,6 +52,10 @@ func TestJsonStructures(t *testing.T) {
 		{
 			[]byte(`{"items":[{"id":1,"title":"string","url":"string"}],"basepath":"string"}`),
 			func() interface{} { return ArticlesPopularResult{} },
+		},
+		{
+			[]byte(`{"items":[{"id":"int","title":"string","ns":"int","url":"string","revision":{"id":"int","user":"string","user_id":"int","timestamp":"int"},"comments":"int","type":"string","abstract":"string","thumbnail":"string","original_dimensions":{"width":"int","height":"int"}}],"basepath":"string"}`),
+			func() interface{} { return ArticlesPopularExpandedResult{} },
 		},
 		{
 			[]byte(`{"items":[{"id":1,"title":"string","url":"string","ns":2}],"basepath":"string"}`),

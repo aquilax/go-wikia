@@ -47,7 +47,7 @@ func (wa *WikiaApi) ArticlesAsSimpleJson(id int) (*ArticlesAsSimpleJsonResult, e
 	return result, json.Unmarshal(jsonBlob, &result)
 }
 
-type ArticlesDetailsResultItemRevision struct {
+type RevisionItem struct {
 	Id        int    `json:"id"`
 	User      string `json:"user"`
 	UserId    int    `json:"user_id"`
@@ -55,16 +55,16 @@ type ArticlesDetailsResultItemRevision struct {
 }
 
 type ArticlesDetailsResultItem struct {
-	Id                 int                               `json:"id"`
-	Title              string                            `json:"title"`
-	Ns                 int                               `json:"ns"`
-	Url                string                            `json:"url"`
-	Revision           ArticlesDetailsResultItemRevision `json:"revision"`
-	Comments           int                               `json:"comments"`
-	Type               string                            `json:"type"`
-	Abstract           string                            `json:"abstract"`
-	Thumbnail          string                            `json:"thumbnail"`
-	OriginalDimensions OriginalDimensions                `json:"original_dimensions"`
+	Id                 int                `json:"id"`
+	Title              string             `json:"title"`
+	Ns                 int                `json:"ns"`
+	Url                string             `json:"url"`
+	Revision           RevisionItem       `json:"revision"`
+	Comments           int                `json:"comments"`
+	Type               string             `json:"type"`
+	Abstract           string             `json:"abstract"`
+	Thumbnail          string             `json:"thumbnail"`
+	OriginalDimensions OriginalDimensions `json:"original_dimensions"`
 	//Metadata	// WTF: Not documented
 }
 
@@ -130,7 +130,7 @@ func DefaultArticlesListRequest() ArticlesListRequest {
 }
 
 // Get a list of pages on the current wiki
-// http://muppet.wikia.com/api/v1#!/Articles/getList_get_3
+// http://muppet.wikia.com/api/v1#!/Articles/getList_get_2
 func (wa *WikiaApi) ArticlesList(params ArticlesListRequest) (*ArticlesListResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
@@ -145,6 +145,45 @@ func (wa *WikiaApi) ArticlesList(params ArticlesListRequest) (*ArticlesListResul
 		return nil, err
 	}
 	var result *ArticlesListResult
+	return result, json.Unmarshal(jsonBlob, &result)
+}
+
+type ArticlesListExpandedItems struct {
+	Id                 int                `json:"id"`
+	Title              string             `json:"title"`
+	Ns                 int                `json:"ns"`
+	Url                string             `json:"url"`
+	Revision           RevisionItem       `json:"revision"`
+	Comments           int                `json:"comments"`
+	Type               string             `json:"type"`
+	Abstract           string             `json:"abstract"`
+	Thumbnail          string             `json:"thumbnail"`
+	OriginalDimensions OriginalDimensions `json:"original_dimensions"`
+}
+
+type ArticlesListExpandedResult struct {
+	Items    []ArticlesListExpandedItems `json:"items"`
+	Offset   string                      `json:"offset"`
+	Basepath string                      `json:"basepath"`
+}
+
+// Get articles list in alphabetical order
+// http://muppet.wikia.com/api/v1#!/Articles/getList_get_3
+func (wa *WikiaApi) ArticlesListExpanded(params ArticlesListRequest) (*ArticlesListExpandedResult, error) {
+	jsonBlob, err := getJsonBlob(
+		wa.url,
+		[]string{ARTICLES_SEGMENT, ARTICLES_LIST_SEGMENT},
+		RequestParams{
+			"expand":     "1",
+			"category":   params.Category,
+			"namespaces": intArrToStr(params.Namespaces),
+			"limit":      intToStr(params.Limit),
+			"offset":     params.Offset,
+		})
+	if err != nil {
+		return nil, err
+	}
+	var result *ArticlesListExpandedResult
 	return result, json.Unmarshal(jsonBlob, &result)
 }
 
@@ -172,6 +211,39 @@ func (wa *WikiaApi) ArticlesMostLinked() (*ArticlesMostLinkedResult, error) {
 		return nil, err
 	}
 	var result *ArticlesMostLinkedResult
+	return result, json.Unmarshal(jsonBlob, &result)
+}
+
+type ArticlesMostLinkedExpandedItem struct {
+	Id          int          `json:"id"`
+	Title       string       `json:"title"`
+	Url         string       `json:"url"`
+	Ns          int          `json:"ns"`
+	Revision    RevisionItem `json:"revision"`
+	Comments    int          `json:"comments"`
+	Type        string       `json:"type"`
+	Abstract    string       `json:"abstract"`
+	BackLinkCnt int          `json:"backlink_cnt"`
+}
+
+type ArticlesMostLinkedExpandedResult struct {
+	Items    []ArticlesMostLinkedExpandedItem `json:"items"`
+	Basepath string                           `json:"basepath"`
+}
+
+// Get the most linked articles on this wiki (expanded results)
+// http://muppet.wikia.com/api/v1#!/Articles/getTop_get_5
+func (wa *WikiaApi) ArticlesMostLinkedExpanded() (*ArticlesMostLinkedExpandedResult, error) {
+	jsonBlob, err := getJsonBlob(
+		wa.url,
+		[]string{ARTICLES_SEGMENT, ARTICLES_MOST_LINKED_SEGMENT},
+		RequestParams{
+			"expand": "1",
+		})
+	if err != nil {
+		return nil, err
+	}
+	var result *ArticlesMostLinkedExpandedResult
 	return result, json.Unmarshal(jsonBlob, &result)
 }
 
@@ -250,6 +322,41 @@ func (wa *WikiaApi) ArticlesPopular(limit int) (*ArticlesPopularResult, error) {
 		return nil, err
 	}
 	var result *ArticlesPopularResult
+	return result, json.Unmarshal(jsonBlob, &result)
+}
+
+type ArticlesPopularExpandedItem struct {
+	Id                 int                `json:"id"`
+	Title              string             `json:"title"`
+	Ns                 int                `json:"ns"`
+	Url                string             `json:"url"`
+	Revision           RevisionItem       `json:"revision"`
+	Comments           int                `json:"comments"`
+	Type               string             `json:"type"`
+	Abstract           string             `json:"abstract"`
+	Thumbnail          string             `json:"thumbnail"`
+	OriginalDimensions OriginalDimensions `json:"original_dimensions"`
+}
+
+type ArticlesPopularExpandedResult struct {
+	Items    []ArticlesPopularExpandedItem `json:"items"`
+	Basepath string                        `json:"basepath"`
+}
+
+// Get popular articles for the current wiki (from the beginning of time)
+// http://muppet.wikia.com/api/v1#!/Articles/getPopular_get_8
+func (wa *WikiaApi) ArticlesPopularExpanded(limit int) (*ArticlesPopularExpandedResult, error) {
+	jsonBlob, err := getJsonBlob(
+		wa.url,
+		[]string{ARTICLES_SEGMENT, ARTICLES_POPULAR_SEGMENT},
+		RequestParams{
+			"expand": "1",
+			"limit":  intToStr(limit),
+		})
+	if err != nil {
+		return nil, err
+	}
+	var result *ArticlesPopularExpandedResult
 	return result, json.Unmarshal(jsonBlob, &result)
 }
 
