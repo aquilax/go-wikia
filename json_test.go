@@ -20,6 +20,39 @@ func TestJsonStructures(t *testing.T) {
 			[]byte(`{"items":[{"article":1,"user":2,"revisionId":3,"timestamp":4},{"article":5,"user":6,"revisionId":7,"timestamp":8}],"basepath":"http://example.com"}`),
 			func() interface{} { return ActivityResult{} },
 		},
+		{
+			[]byte(`{"sections":{"title":"string","level":1,"content":[{"type":"string","text":"string","elements":[{"text":"string","elements":[]}]}],"images":[{"src":"string","caption":"string"}]}}`),
+			func() interface{} { return ArticleAsSimpleJsonResult{} },
+		},
+
+		{
+				[]byte(`{"items":[{"id":1,"title":"string","ns":2,"url":"string","revision":{"id":3,"user":"string","user_id":4,"timestamp":5},"comments":6,"type":"string","abstract":"string","thumbnail":"string","original_dimensions":{"width":7,"height":8}}],"basepath":"string"}`),
+			func() interface{} { return ArticleDetailsResult{} },
+		},
+		{
+				[]byte(`{"items":[{"id":1,"title":"string","url":"string","ns":1}],"offset":"string","basepath":"string"}`),
+			func() interface{} { return ListResult{} },
+		},
+		{
+				[]byte(`{"items":[{"id":1,"title":"string","url":"string","ns":2,"backlink_cnt":3}],"basepath":"string"}`),
+			func() interface{} { return MostLinkedResult{} },
+		},
+		{
+				[]byte(`{"id":1,"ns":2,"title":"string","abstract":"string","quality":3,"url":"string","creator":{"avatar":"string","name":"string"},"creation_date":"string","thumbnail":"string","original_dimensions":{"width":5,"height":6}}`),
+			func() interface{} { return ArticlesNewResult{} },
+		},
+		{
+				[]byte(`{"items":[{"id":1,"title":"string","url":"string"}],"basepath":"string"}`),
+			func() interface{} { return ArticlesPopularResult{} },
+		},
+		{
+				[]byte(`{"items":[{"id":1,"title":"string","url":"string","ns":2}],"basepath":"string"}`),
+			func() interface{} { return ArticlesTopResult{} },
+		},
+		{
+				[]byte(`{"items":[{"wiki":{"id":1,"name":"string","language":"string","domain":"string"},"articles":[{"id":2,"ns":3}]}]}`),
+			func() interface{} { return ArticlesTopByHubResult{} },
+		},
 	}
 	for i, testCase := range testCases {
 		structure := testCase.getStructure()

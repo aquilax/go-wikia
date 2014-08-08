@@ -27,13 +27,13 @@ type AsSimpleJsonSections struct {
 	Images  []AsSimpleJsonImagesItem  `json:"images"`
 }
 
-type AsSimpleJsonResult struct {
+type ArticleAsSimpleJsonResult struct {
 	Sections AsSimpleJsonSections `json:"sections"`
 }
 
 // Get simplified article contents
 // http://muppet.wikia.com/api/v1#!/Articles/getAsSimpleJson_get_0
-func (wa *WikiaApi) AsSimpleJson(id int) (AsSimpleJsonResult, error) {
+func (wa *WikiaApi) AsSimpleJson(id int) (ArticleAsSimpleJsonResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
 		[]string{ARTICLES_SEGMENT, "AsSimpleJson"},
@@ -41,9 +41,9 @@ func (wa *WikiaApi) AsSimpleJson(id int) (AsSimpleJsonResult, error) {
 			"id": intToStr(id),
 		})
 	if err != nil {
-		return AsSimpleJsonResult{}, err
+		return ArticleAsSimpleJsonResult{}, err
 	}
-	var ares AsSimpleJsonResult
+	var ares ArticleAsSimpleJsonResult
 	return ares, json.Unmarshal(jsonBlob, &ares)
 }
 
@@ -67,7 +67,7 @@ type DetailsResultItem struct {
 	OriginalDimensions OriginalDimensions        `json:"original_dimensions"`
 }
 
-type DetailsResult struct {
+type ArticleDetailsResult struct {
 	Items    []DetailsResultItem `json:"items"`
 	Basepath string              `json:"basepath"`
 }
@@ -86,7 +86,7 @@ func DetailsDefaults() DetailsRequest {
 
 // Get details about one or more articles
 // http://muppet.wikia.com/api/v1#!/Articles/getDetails_get_1
-func (wa *WikiaApi) Details(dr DetailsRequest) (DetailsResult, error) {
+func (wa *WikiaApi) ArticleDetails(dr DetailsRequest) (ArticleDetailsResult, error) {
 	jsonBlob, err := getJsonBlob(
 		wa.url,
 		[]string{ARTICLES_SEGMENT, "Details"},
@@ -98,9 +98,9 @@ func (wa *WikiaApi) Details(dr DetailsRequest) (DetailsResult, error) {
 			"height":   intToStr(dr.height),
 		})
 	if err != nil {
-		return DetailsResult{}, err
+		return ArticleDetailsResult{}, err
 	}
-	var dres DetailsResult
+	var dres ArticleDetailsResult
 	return dres, json.Unmarshal(jsonBlob, &dres)
 }
 
