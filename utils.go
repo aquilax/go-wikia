@@ -18,6 +18,7 @@ const (
 	ARTICLES_SEGMENT      = "Articles"
 	NAVIGATION_SEGMENT    = "Navigation"
 	RELATED_PAGES_SEGMENT = "RelatedPages"
+	SEARCH_SEGMENT        = "Search"
 )
 
 func isValidUrl(u string) (bool, error) {
