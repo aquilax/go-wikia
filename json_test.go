@@ -65,6 +65,10 @@ func TestJsonStructures(t *testing.T) {
 			[]byte(`{"total":"int","batches":"int","currentBatch":"int","next":"int","items":[{"id":"int","title":"string","url":"string","ns":"int","quality":"int"}]}`),
 			func() interface{} { return SearchListResult{} },
 		},
+		{
+			[]byte(`{"items":[{"title":"string"}]}`),
+			func() interface{} { return SearchSuggestionsListResult{} },
+		},
 	}
 	for i, testCase := range testCases {
 		structure := testCase.getStructure()
