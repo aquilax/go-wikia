@@ -47,19 +47,12 @@ func (wa *WikiaApi) ArticlesAsSimpleJson(id int) (*ArticlesAsSimpleJsonResult, e
 	return result, json.Unmarshal(jsonBlob, &result)
 }
 
-type RevisionItem struct {
-	Id        int    `json:"id"`
-	User      string `json:"user"`
-	UserId    int    `json:"user_id"`
-	Timestamp string `json:"timestamp"` //WTF: TS as string
-}
-
 type ArticlesDetailsResultItem struct {
 	Id                 int                `json:"id"`
 	Title              string             `json:"title"`
 	Ns                 int                `json:"ns"`
 	Url                string             `json:"url"`
-	Revision           RevisionItem       `json:"revision"`
+	Revision           Revision           `json:"revision"`
 	Comments           int                `json:"comments"`
 	Type               string             `json:"type"`
 	Abstract           string             `json:"abstract"`
@@ -81,6 +74,7 @@ type ArticlesDetailsRequest struct {
 	Height   int
 }
 
+// Default request for Article Details
 func DefaultArticlesDetailsRequest() ArticlesDetailsRequest {
 	return ArticlesDetailsRequest{[]int{50}, []string{}, 100, 200, 200}
 }
@@ -125,6 +119,7 @@ type ArticlesListRequest struct {
 	Offset     string
 }
 
+// Default request for Article List
 func DefaultArticlesListRequest() ArticlesListRequest {
 	return ArticlesListRequest{"", []int{0}, 25, ""}
 }
@@ -153,7 +148,7 @@ type ArticlesListExpandedItems struct {
 	Title              string             `json:"title"`
 	Ns                 int                `json:"ns"`
 	Url                string             `json:"url"`
-	Revision           RevisionItem       `json:"revision"`
+	Revision           Revision           `json:"revision"`
 	Comments           int                `json:"comments"`
 	Type               string             `json:"type"`
 	Abstract           string             `json:"abstract"`
@@ -215,15 +210,15 @@ func (wa *WikiaApi) ArticlesMostLinked() (*ArticlesMostLinkedResult, error) {
 }
 
 type ArticlesMostLinkedExpandedItem struct {
-	Id          int          `json:"id"`
-	Title       string       `json:"title"`
-	Url         string       `json:"url"`
-	Ns          int          `json:"ns"`
-	Revision    RevisionItem `json:"revision"`
-	Comments    int          `json:"comments"`
-	Type        string       `json:"type"`
-	Abstract    string       `json:"abstract"`
-	BackLinkCnt int          `json:"backlink_cnt"`
+	Id          int      `json:"id"`
+	Title       string   `json:"title"`
+	Url         string   `json:"url"`
+	Ns          int      `json:"ns"`
+	Revision    Revision `json:"revision"`
+	Comments    int      `json:"comments"`
+	Type        string   `json:"type"`
+	Abstract    string   `json:"abstract"`
+	BackLinkCnt int      `json:"backlink_cnt"`
 }
 
 type ArticlesMostLinkedExpandedResult struct {
@@ -276,6 +271,7 @@ type ArticlesNewRequest struct {
 	MinArticleQuality int
 }
 
+// Default request for Articles New
 func DefaultArticlesNewRequest() ArticlesNewRequest {
 	return ArticlesNewRequest{[]int{0}, 20, 10}
 }
@@ -330,7 +326,7 @@ type ArticlesPopularExpandedItem struct {
 	Title              string             `json:"title"`
 	Ns                 int                `json:"ns"`
 	Url                string             `json:"url"`
-	Revision           RevisionItem       `json:"revision"`
+	Revision           Revision           `json:"revision"`
 	Comments           int                `json:"comments"`
 	Type               string             `json:"type"`
 	Abstract           string             `json:"abstract"`
@@ -378,6 +374,7 @@ type ArticlesTopRequest struct {
 	Limit      int // WTF: String in original doc
 }
 
+// Default request for Articles Top
 func DefaultArticlesTopRequest() ArticlesTopRequest {
 	return ArticlesTopRequest{[]int{0}, "", 10}
 }
@@ -417,8 +414,7 @@ type ArticlesTopByHubItem struct {
 	Articles []ArticlesTopByHubArticle `json:"articles"`
 }
 
-// WTF: Does not work BadRequest
-type ArticlesTopByHubResult struct {
+type ArticlesTopByHubResult struct { // WTF: Does not work BadRequest
 	Items []ArticlesTopByHubItem `json:"items"`
 }
 
@@ -428,6 +424,7 @@ type ArticlesTopByHubRequest struct {
 	Namespaces []int
 }
 
+// Default request for Articles Top By Hub
 func DefaultArticlesTopByHubRequest() ArticlesTopByHubRequest {
 	return ArticlesTopByHubRequest{"gaming", "en", []int{0}}
 }

@@ -44,6 +44,13 @@ const (
 
 type RequestParams map[string]string
 
+type Revision struct {
+	Id        int    `json:"id"`
+	User      string `json:"user"`
+	UserId    int    `json:"user_id"`
+	Timestamp string `json:"timestamp"` //WTF: TS as string
+}
+
 type OriginalDimensions struct {
 	Width  int `json:"width"`
 	Height int `json:"height"`

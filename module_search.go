@@ -30,6 +30,7 @@ type SearchListParams struct {
 	Namespaces        []int
 }
 
+// Default request for Search List
 func DefaultSearchListParams() SearchListParams {
 	return SearchListParams{"test", "", "", 25, 10, 0, []int{0}}
 }

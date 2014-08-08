@@ -23,7 +23,7 @@ type ActivityRequest struct {
 	AllowDuplicates bool
 }
 
-// Provides default values for LatestActivity function
+// Default request for Activity functions
 func DefaultActivityRequest() ActivityRequest {
 	return ActivityRequest{10, []int{0}, true}
 }
