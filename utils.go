@@ -14,8 +14,10 @@ const (
 	SEPARATOR_PATH  = "/"
 	SEPARATOR_ARRAY = ","
 
-	ACTIVITY_SEGMENT = "Activity"
-	ARTICLES_SEGMENT = "Articles"
+	ACTIVITY_SEGMENT      = "Activity"
+	ARTICLES_SEGMENT      = "Articles"
+	NAVIGATION_SEGMENT    = "Navigation"
+	RELATED_PAGES_SEGMENT = "RelatedPages"
 )
 
 func isValidUrl(u string) (bool, error) {
