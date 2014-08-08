@@ -21,6 +21,11 @@ type generatePathTestCase struct {
 	expected string
 }
 
+type generateQueryTestCase struct {
+	params   map[string]string
+	expected string
+}
+
 type strArrToStrTestCase struct {
 	words    []string
 	expected string
@@ -36,6 +41,7 @@ func TestIsValidUrl(t *testing.T) {
 		{"http://1.2.3.4/", true},
 		{"http://example.com/", true},
 		{"ftp://example.com/", false},
+		{"fff", false},
 	}
 	for i, testCase := range testCases {
 		valid, _ := isValidUrl(testCase.url)
@@ -71,6 +77,18 @@ func TestGeneratePath(t *testing.T) {
 		path := generatePath(testCase.segments)
 		if path != testCase.expected {
 			t.Errorf("For testCase %d expected path=%s but got path=%s", i, testCase.expected, path)
+		}
+	}
+}
+
+func TestGenerateQuery(t *testing.T) {
+	var testCases = []generateQueryTestCase{
+		{map[string]string{"a": "1", "b": "2"}, "a=1&b=2"},
+	}
+	for i, testCase := range testCases {
+		query := generateQuery(testCase.params)
+		if query != testCase.expected {
+			t.Errorf("For testCase %d expected query=%s but got query=%s", i, testCase.expected, query)
 		}
 	}
 }
